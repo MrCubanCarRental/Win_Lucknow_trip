@@ -47,39 +47,38 @@
     <a id="whatsappLink" href="#" target="_blank">Share on WhatsApp</a>
   </div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyABfNE_N34NvVW5_81_bT3BmYU14iiQzfRrq4Yz_qOVbFjvtYYDlgqbBq6-X9n7sD69Q/exec";
+ <script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyABfNE_N34NvVW5_81_bT3BmYU14iiQzfRrq4Yz_qOVbFjvtYYDlgqbBq6-X9n7sD69Q/exec";
 
-    document.getElementById("referralForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+  document.getElementById("referralForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-      const phone = document.getElementById("phone").value.trim();
+    const phone = document.getElementById("phone").value.trim();
 
-      if (!phone) {
-        alert("Please enter your phone number.");
-        return;
-      }
+    if (!phone) {
+      alert("Please enter your phone number.");
+      return;
+    }
 
-      // Send phone number to Google Script
-      fetch(scriptURL, {
-        method: 'POST',
-        body: new URLSearchParams({
-          phone: phone,
-          referrer: phone
-        })
+    fetch(scriptURL, {
+      method: 'POST',
+      body: new URLSearchParams({
+        phone: phone,
+        referrer: phone
       })
-      .then(response => {
-        // Generate WhatsApp referral link
-        const whatsappMessage = `Hey! Use my referral link to join: https://yourwebsite.com/?ref=${encodeURIComponent(phone)}`;
-        const whatsappURL = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+    })
+    .then(response => {
+      const whatsappMessage = `Hey! Win a free trip! Use my referral link to join: https://mrcubancarrental.github.io/Win_Lucknow_trip/?ref=${encodeURIComponent(phone)}`;
+      const whatsappURL = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
 
-        document.getElementById("whatsappLink").href = whatsappURL;
-        document.getElementById("shareSection").style.display = "block";
-      })
-      .catch(error => {
-        alert('Error submitting phone number: ' + error.message);
-      });
+      document.getElementById("whatsappLink").href = whatsappURL;
+      document.getElementById("shareSection").style.display = "block";
+    })
+    .catch(error => {
+      alert('Error: ' + error.message);
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
