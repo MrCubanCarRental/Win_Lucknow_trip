@@ -134,19 +134,23 @@
     }
   </style>
 </head>
-<body>
+<!-- Keep your existing <head> as it is -->
 
+<body>
   <div class="container">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrJGlqgTL_WwfbSVU6iDVxpxkdQdUQvYVCwA&s" alt="Logo" class="logo">
-   <h2>🎉 Lucky Draw: Tour Lucknow for Free!</h2>
+    <h2>🎉 Lucky Draw: Tour Lucknow for Free!</h2>
 
-<p style="color:#d9534f; font-weight: bold; margin-top: -10px; margin-bottom: 10px;">
-  🏭 Only for MCF (Modern Coach Factory) employees!
-</p>
+    <p style="color:#d9534f; font-weight: bold; margin-top: -10px; margin-bottom: 10px;">
+      🏭 Only for MCF (Modern Coach Factory) employees!
+    </p>
 
-<p style="color:#555; font-size:15px; margin-bottom:20px;">
-  Share your referral link with friends. The more people you refer, the better your chances to win a <strong>free trip to Lucknow!</strong>
-</p>
+    <p style="color:#555; font-size:15px; margin-bottom:20px;">
+      Share your referral link with friends. The more people you refer, the better your chances to win a <strong>free trip to Lucknow!</strong>
+    </p>
+
+    <!-- Referred By Text -->
+    <p id="referredByText" style="color:green; font-weight:bold; display:none; margin-bottom:15px;"></p>
 
     <form id="referralForm">
       <label for="phone">Enter your phone number:</label>
@@ -164,11 +168,26 @@
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbyABfNE_N34NvVW5_81_bT3BmYU14iiQzfRrq4Yz_qOVbFjvtYYDlgqbBq6-X9n7sD69Q/exec";
 
+    function getRefFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('ref') || "";
+    }
+
+    window.onload = function() {
+      const referrer = getRefFromURL();
+      if (referrer) {
+        document.getElementById('referredByText').innerText = `You are referred by: ${referrer}`;
+        document.getElementById('referredByText').style.display = 'block';
+      }
+    };
+
     document.getElementById("referralForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
       const phone = document.getElementById("phone").value.trim();
       const loader = document.getElementById("loader");
+      const referrer = getRefFromURL() || phone;  // If no referrer in URL, use self
+
       loader.style.display = "block";
 
       if (!phone) {
@@ -181,11 +200,12 @@
         method: 'POST',
         body: new URLSearchParams({
           phone: phone,
-          referrer: phone
+          referrer: referrer
         })
       })
       .then(response => {
         loader.style.display = "none";
+
         const whatsappMessage = `Hey! Win a free trip! Use my referral link to join: https://mrcubancarrental.github.io/Win_Lucknow_trip/?ref=${encodeURIComponent(phone)}`;
         const whatsappURL = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -199,4 +219,6 @@
     });
   </script>
 </body>
+</html>
+
 </html>
